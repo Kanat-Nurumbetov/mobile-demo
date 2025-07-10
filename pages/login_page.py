@@ -13,7 +13,7 @@ class LoginPage:
         field = WebDriverWait(self.driver, 15).until(
             EC.presence_of_element_located(self.PHONE_INPUT)
         )
-        field.send_keys('7073502010')
+        field.send_keys(phone)
 
     def click_login(self):
         btn = self.driver.find_element(*self.LOGIN_BUTTON)

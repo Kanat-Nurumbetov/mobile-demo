@@ -42,7 +42,7 @@ def pytest_exception_interact(node, call, report):
 def login(driver):
         driver.save_screenshot("screenshots/before_any_actions.png")
         login = LoginPage(driver)
-        login.enter_phone("7073502010")
+        login.enter_phone("7771112222")
         driver.save_screenshot("screenshots/after_phone.png")
         login.click_login()
         driver.save_screenshot("screenshots/after_click.png")
