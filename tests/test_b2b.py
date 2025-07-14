@@ -1,5 +1,7 @@
 from pages.main_page_ob import MainPage
-import time
+from pages.od_main_page import OdMainPage
+from pages.qr_scaner_page import QrScanerPage
+import time, pytest
 
 
 def test_main_page_ob(driver, login):
@@ -29,3 +31,18 @@ def test_go_to_online_duken(driver, login):
     driver.save_screenshot("screenshots/after_od_enter.png")
 
     assert main.is_marketplace_loaded(), "Marketplace не загрузился"
+
+@pytest.mark.parametrize(
+    "qr_image",
+    ["distrA", "distrB"],          # ключи из QR_PAYLOADS
+    indirect=True,                 # передаём в фикстуру qr_image
+    ids=["Distributor-A", "Distributor-B"]
+)
+def test_scan_and_pay(driver, qr_image):
+    od = OdMainPage(driver)
+    od.select_qr_scaner()
+    driver.save_screenshot("screenshots/after_qr_selected.png")
+
+    scanner = QrScanerPage(driver)
+    scanner.qr_gallery_open(qr_image)
+    driver.save_screenshot("screenshots/after_load_qr.png")

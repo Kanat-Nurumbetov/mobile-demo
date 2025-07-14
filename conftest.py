@@ -1,4 +1,5 @@
-import pytest
+import pytest, os
+from pathlib import Path
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 
@@ -6,6 +7,9 @@ from pages.login_page import LoginPage
 from pages.otp_page import OtpPage
 from pages.permissions_page import PermissionsPage
 from pages.pin_page import PinPage
+from pages.od_main_page import OdMainPage
+from utils.qr_generator import make_qr
+from data.qr_payloads import QR_PAYLOADS
 
 
 @pytest.fixture(scope='session')
@@ -16,7 +20,7 @@ def driver():
     options.app_package = "kz.halyk.onlinebank.stage"
     options.app_activity = "kz.halyk.onlinebank.ui_release4.screens.splash.SplashActivity"
     # options.app = r"C:\Users\Kanat\AndroidStudioProjects\b2b\app\build\outputs\apk\debug\app-debug.apk"
-    options.app = r"/Users/a00059362/AndroidStudioProjects/mobiledemo/app.apk"
+    # options.app = r"/Users/a00059362/AndroidStudioProjects/mobiledemo/app.apk"
     options.automation_name = "UiAutomator2"
     options.auto_grant_permissions = True
     options.adb_exec_timeout = 60000  # 60 секунд (в миллисекундах)
@@ -60,3 +64,19 @@ def login(driver):
         permissions = PermissionsPage(driver)
         permissions.click_next()
         driver.save_screenshot("screenshots/after_permission.png")
+
+@pytest.fixture
+def qr_image(request, tmp_path, driver):
+
+    distr = request.param
+    payload_info = QR_PAYLOADS[distr]
+
+    # локальный PNG
+    local_file: Path = tmp_path / payload_info["file_name"]
+    make_qr(payload_info["text"], local_file)
+
+    # путь на эмуляторе
+    device_file = f"/sdcard/Download/{payload_info['file_name']}"
+    os.system(f"adb push {local_file} {device_file}")
+
+    return device_file
