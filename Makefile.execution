@@ -1,0 +1,82 @@
+.PHONY: test test-parallel test-qr test-od test-smoke install clean browserstack-upload browserstack-test
+
+# Установка зависимостей
+install:
+	pip install -r requirements.txt
+
+# Обычный запуск тестов
+test:
+	pytest -v --html=reports/report.html --self-contained-html
+
+# Параллельный запуск всех тестов
+test-parallel:
+	pytest -n auto -v --html=reports/report.html --self-contained-html
+
+# QR тесты параллельно
+test-qr:
+	pytest tests/test_qr_payment.py -n 2 -v
+
+# Тесты навигации OD
+test-od:
+	pytest tests/test_od_navigation.py -v
+
+# Smoke тесты
+test-smoke:
+	pytest -m smoke -v
+
+# Параллельные QR тесты с отчетом
+test-qr-report:
+	pytest tests/test_qr_payment.py -n 2 -v --html=reports/qr_report.html --self-contained-html
+
+# Локальный запуск вашего QR теста
+test-qr-local:
+	TEST_MODE=local pytest tests/test_qr_browserstack.py -v --html=reports/qr_local_report.html --self-contained-html
+
+# BrowserStack запуск вашего QR теста
+test-qr-browserstack:
+	TEST_MODE=browserstack pytest tests/test_qr_browserstack.py -v --html=reports/qr_browserstack_report.html --self-contained-html
+
+# Только smoke тест в BrowserStack
+test-smoke-browserstack:
+	TEST_MODE=browserstack pytest tests/test_qr_browserstack.py::TestQrPaymentBrowserStack::test_qr_scanner_ui_elements_universal -v
+
+# Оригинальный B2B тест локально (ваш существующий)
+test-b2b-local:
+	TEST_MODE=local pytest tests/test_b2b.py -v --html=reports/b2b_local_report.html --self-contained-html
+
+# Проверка подключения
+test-connection:
+	python test_connection.py
+
+# BrowserStack команды
+browserstack-upload:
+	python -c "from browserstack_helper import BrowserStackHelper; helper = BrowserStackHelper(); helper.upload_app('apk/halyk_bank_app.apk')"
+
+browserstack-check:
+	python -c "from settings import validate_browserstack_config; validate_browserstack_config()"
+
+browserstack-apps:
+	python -c "from browserstack_helper import BrowserStackHelper; import json; helper = BrowserStackHelper(); apps = helper.get_uploaded_apps(); print(json.dumps(apps, indent=2))"
+
+# Очистка файлов
+clean:
+	rm -rf screenshots/*.png
+	rm -rf reports/*.html
+	rm -rf reports/*.xml
+	rm -rf .pytest_cache
+	rm -rf __pycache__
+	find . -name "*.pyc" -delete
+
+# Запуск Appium сервера (для локальных тестов)
+appium:
+	appium --port 4723 --log-level info
+
+# Проверка устройств
+devices:
+	adb devices
+
+# Полный цикл: очистка, установка, тесты
+full-test: clean install test-parallel
+
+# Полный цикл для BrowserStack
+full-browserstack-test: clean install browserstack-check test-qr-browserstack

@@ -1,0 +1,49 @@
+.PHONY: test test-parallel test-qr test-od test-smoke install clean
+
+# Установка зависимостей
+install:
+	pip install -r requirements.txt
+
+# Обычный запуск тестов
+test:
+	pytest -v --html=reports/report.html --self-contained-html
+
+# Параллельный запуск всех тестов
+test-parallel:
+	pytest -n auto -v --html=reports/report.html --self-contained-html
+
+# QR тесты параллельно
+test-qr:
+	pytest tests/test_qr_payment.py -n 2 -v
+
+# Тесты навигации OD
+test-od:
+	pytest tests/test_od_navigation.py -v
+
+# Smoke тесты
+test-smoke:
+	pytest -m smoke -v
+
+# Параллельные QR тесты с отчетом
+test-qr-report:
+	pytest tests/test_qr_payment.py -n 2 -v --html=reports/qr_report.html --self-contained-html
+
+# Очистка файлов
+clean:
+	rm -rf screenshots/*.png
+	rm -rf reports/*.html
+	rm -rf reports/*.xml
+	rm -rf .pytest_cache
+	rm -rf __pycache__
+	find . -name "*.pyc" -delete
+
+# Запуск Appium сервера
+appium:
+	appium --port 4723 --log-level info
+
+# Проверка устройств
+devices:
+	adb devices
+
+# Полный цикл: очистка, установка, тесты
+full-test: clean install test-parallel

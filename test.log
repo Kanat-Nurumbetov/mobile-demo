@@ -1,0 +1,66 @@
+2025-07-21 13:57:40,897 - conftest - INFO - 🚀 Инициализация Appium драйвера для сессии...
+2025-07-21 13:57:40,898 - conftest - INFO - 📱 Используем локальный APK: /Users/a00059362/Desktop/Новая папка/mobile-demo/mobile-demo/apk/halyk_bank_app.apk
+2025-07-21 13:58:42,579 - conftest - INFO - ✅ Appium драйвер успешно создан
+2025-07-21 13:58:42,581 - conftest - INFO - 🔐 Начинаем процедуру авторизации для сессии...
+2025-07-21 13:58:48,141 - pages.base_page - INFO - Введен текст '7771112222' в поле: ('id', 'kz.halyk.onlinebank.stage:id/phone_input')
+2025-07-21 13:58:50,739 - pages.base_page - INFO - Клик по элементу: ('id', 'kz.halyk.onlinebank.stage:id/login_button')
+2025-07-21 13:58:55,453 - pages.base_page - INFO - Введен текст '000000' в поле: ('id', 'kz.halyk.onlinebank.stage:id/et')
+2025-07-21 13:58:59,805 - pages.pin_page - INFO - Ожидаем экран ввода PIN...
+2025-07-21 13:59:02,040 - pages.pin_page - INFO - Экран PIN загружен
+2025-07-21 13:59:02,040 - pages.pin_page - INFO - Вводим PIN: ****
+2025-07-21 13:59:02,477 - pages.base_page - INFO - Клик по элементу: ('xpath', "//android.widget.TextView[@text='0']")
+2025-07-21 13:59:02,981 - pages.pin_page - INFO - Введена 1-я цифра PIN
+2025-07-21 13:59:03,481 - pages.base_page - INFO - Клик по элементу: ('xpath', "//android.widget.TextView[@text='0']")
+2025-07-21 13:59:03,983 - pages.pin_page - INFO - Введена 2-я цифра PIN
+2025-07-21 13:59:04,639 - pages.base_page - INFO - Клик по элементу: ('xpath', "//android.widget.TextView[@text='0']")
+2025-07-21 13:59:05,141 - pages.pin_page - INFO - Введена 3-я цифра PIN
+2025-07-21 13:59:05,643 - pages.base_page - INFO - Клик по элементу: ('xpath', "//android.widget.TextView[@text='0']")
+2025-07-21 13:59:06,146 - pages.pin_page - INFO - Введена 4-я цифра PIN
+2025-07-21 13:59:09,905 - pages.pin_page - INFO - Вводим PIN: ****
+2025-07-21 13:59:10,306 - pages.base_page - INFO - Клик по элементу: ('xpath', "//android.widget.TextView[@text='0']")
+2025-07-21 13:59:10,815 - pages.pin_page - INFO - Введена 1-я цифра PIN
+2025-07-21 13:59:11,307 - pages.base_page - INFO - Клик по элементу: ('xpath', "//android.widget.TextView[@text='0']")
+2025-07-21 13:59:11,808 - pages.pin_page - INFO - Введена 2-я цифра PIN
+2025-07-21 13:59:12,768 - pages.base_page - INFO - Клик по элементу: ('xpath', "//android.widget.TextView[@text='0']")
+2025-07-21 13:59:13,269 - pages.pin_page - INFO - Введена 3-я цифра PIN
+2025-07-21 13:59:14,760 - pages.base_page - INFO - Клик по элементу: ('xpath', "//android.widget.TextView[@text='0']")
+2025-07-21 13:59:15,261 - pages.pin_page - INFO - Введена 4-я цифра PIN
+2025-07-21 13:59:38,475 - conftest - INFO - ✅ Авторизация сессии выполнена успешно
+2025-07-21 13:59:38,477 - conftest - INFO - ▶️ [master] НАЧИНАЕМ ТЕСТ: test_qr_payment_cancellation[distrA]
+2025-07-21 13:59:38,490 - conftest - INFO - 📱 Создаем QR для дистрибьютора: distrA
+2025-07-21 13:59:40,311 - conftest - INFO - ✅ QR файл загружен на устройство: /sdcard/Download/master_Universal.png
+2025-07-21 13:59:40,312 - utils.test_helpers - INFO - ШАГ: Навигация к QR сканеру
+2025-07-21 13:59:40,313 - pages.main_page_ob - INFO - Ожидаем загрузки главной страницы...
+2025-07-21 13:59:48,139 - pages.main_page_ob - INFO - Главная страница загружена
+2025-07-21 14:00:56,342 - utils.test_helpers - INFO - Скриншот: screenshots/main_page_loaded_1753088453.png
+2025-07-21 14:00:56,344 - pages.main_page_ob - INFO - Переходим в Online Duken...
+2025-07-21 14:00:56,344 - pages.main_page_ob - INFO - Попытка 1: ищем кнопку OD по локатору ('xpath', '(//android.view.ViewGroup[@resource-id="kz.halyk.onlinebank.stage:id/container"])[1]')
+2025-07-21 14:00:57,247 - pages.main_page_ob - INFO - Кнопка Online Duken нажата
+2025-07-21 14:01:07,945 - utils.test_helpers - INFO - Скриншот: screenshots/od_main_opened_1753088462.png
+2025-07-21 14:01:21,675 - utils.test_helpers - ERROR - ОШИБКА В ШАГЕ: Навигация к QR сканеру - Не удалось открыть QR сканер
+assert None
+ +  where None = select_qr_scaner()
+ +    where select_qr_scaner = <pages.od_main_page.OdMainPage object at 0x10589c980>.select_qr_scaner
+2025-07-21 14:01:25,385 - conftest - INFO - 📸 Скриншот ошибки сохранен: /Users/a00059362/Desktop/Новая папка/mobile-demo/mobile-demo/screenshots/master_test_qr_payment_cancellation[distrA]_failed_1753088481.png
+2025-07-21 14:01:25,387 - conftest - INFO - ✅ [master] ТЕСТ ЗАВЕРШЕН: test_qr_payment_cancellation[distrA] (выполнен за 106.91с)
+2025-07-21 14:01:36,744 - conftest - INFO - 🔒 Appium драйвер закрыт
+2025-07-21 14:18:13,283 - conftest - INFO - 🚀 Инициализация Appium драйвера для сессии...
+2025-07-21 14:18:13,284 - conftest - INFO - 📱 Используем локальный APK: /Users/a00059362/Desktop/Новая папка/mobile-demo/mobile-demo/apk/halyk_bank_app.apk
+2025-07-21 14:21:04,405 - conftest - ERROR - ❌ Ошибка создания драйвера: Message: An unknown server-side error occurred while processing the command. Original error: The instrumentation process cannot be initialized within 60000ms timeout. Make sure the application under test does not crash and investigate the logcat output. You could also try to increase the value of 'uiautomator2ServerLaunchTimeout' capability
+Stacktrace:
+UnknownError: An unknown server-side error occurred while processing the command. Original error: The instrumentation process cannot be initialized within 60000ms timeout. Make sure the application under test does not crash and investigate the logcat output. You could also try to increase the value of 'uiautomator2ServerLaunchTimeout' capability
+    at getResponseForW3CError (/usr/local/lib/node_modules/appium/node_modules/@appium/base-driver/lib/protocol/errors.js:1145:9)
+    at asyncHandler (/usr/local/lib/node_modules/appium/node_modules/@appium/base-driver/lib/protocol/protocol.js:485:57)
+2025-07-21 17:42:33,866 - conftest - INFO - 🚀 Инициализация Appium драйвера для сессии...
+2025-07-21 17:42:33,866 - conftest - INFO - 📱 Используем локальный APK: /Users/a00059362/Desktop/Новая папка/mobile-demo/mobile-demo/apk/halyk_bank_app.apk
+2025-07-21 17:42:46,052 - conftest - ERROR - ❌ Ошибка создания драйвера: Message: An unknown server-side error occurred while processing the command. Original error: Error executing adbExec. Original error: 'Command '/Users/a00059362/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 20'; Command output: cmd: Can't find service: settings
+cmd: Can't find service: settings
+cmd: Can't find service: settings
+
+Stacktrace:
+UnknownError: An unknown server-side error occurred while processing the command. Original error: Error executing adbExec. Original error: 'Command '/Users/a00059362/Library/Android/sdk/platform-tools/adb -P 5037 -s emulator-5554 shell 'settings delete global hidden_api_policy_pre_p_apps;settings delete global hidden_api_policy_p_apps;settings delete global hidden_api_policy'' exited with code 20'; Command output: cmd: Can't find service: settings
+cmd: Can't find service: settings
+cmd: Can't find service: settings
+
+    at getResponseForW3CError (/usr/local/lib/node_modules/appium/node_modules/@appium/base-driver/lib/protocol/errors.js:1145:9)
+    at asyncHandler (/usr/local/lib/node_modules/appium/node_modules/@appium/base-driver/lib/protocol/protocol.js:485:57)

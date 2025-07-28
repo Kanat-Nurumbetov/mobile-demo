@@ -1,0 +1,41 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.venv/
+venv/
+env/
+
+# --- тесты / отчёты ---
+.pytest_cache/
+.coverage
+htmlcov/
+reports/
+allure-results/
+allure-report/
+
+# --- инструменты / временные ---
+.cache/
+dist/
+build/
+pip-wheel-metadata/
+apk/
+
+# --- IDE ---
+# (обычно .idea лучше не коммитить; если в команде принято наоборот — исключите лишь workspace.xml)
+.idea/
+!.idea/codeStyleSettings.xml
+
+# --- ОС / редакторы ---
+.DS_Store
+Thumbs.db
+.lock-wscript
+
+# --- секреты и локальные конфиги ---
+*.env
+.env*
+secrets.yaml
+config.local.*
