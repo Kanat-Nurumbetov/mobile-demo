@@ -30,19 +30,37 @@ test-qr-report:
 
 # Локальный запуск вашего QR теста
 test-qr-local:
-	TEST_MODE=local pytest tests/test_qr_browserstack.py -v --html=reports/qr_local_report.html --self-contained-html
+	TEST_MODE=local pytest tests/test_b2b.py -v --html=reports/qr_local_report.html --self-contained-html
 
 # BrowserStack запуск вашего QR теста
 test-qr-browserstack:
-	TEST_MODE=browserstack pytest tests/test_qr_browserstack.py -v --html=reports/qr_browserstack_report.html --self-contained-html
+	TEST_MODE=browserstack pytest tests/test_b2b.py -v --html=reports/qr_browserstack_report.html --self-contained-html
 
 # Только smoke тест в BrowserStack
 test-smoke-browserstack:
-	TEST_MODE=browserstack pytest tests/test_qr_browserstack.py::TestQrPaymentBrowserStack::test_qr_scanner_ui_elements_universal -v
+	TEST_MODE=browserstack pytest tests/test_b2b.py::TestQrPaymentBrowserStack::test_qr_scanner_ui_elements_universal -v
 
 # Оригинальный B2B тест локально (ваш существующий)
 test-b2b-local:
 	TEST_MODE=local pytest tests/test_b2b.py -v --html=reports/b2b_local_report.html --self-contained-html
+
+# Новые команды для мульти-устройственного тестирования
+test-multidevice:
+	TEST_MODE=browserstack pytest tests/test_b2b.py::TestQrPaymentBrowserStack::test_full_qr_payment_flow_multidevice -v --html=reports/multidevice_report.html --self-contained-html
+
+test-ui-multidevice:
+	TEST_MODE=browserstack pytest tests/test_b2b.py::TestQrPaymentBrowserStack::test_qr_scanner_ui_elements_multidevice -v --html=reports/ui_multidevice_report.html --self-contained-html
+
+# Тестирование на конкретных устройствах
+test-samsung-s22:
+	TEST_MODE=browserstack pytest tests/test_b2b.py -k "samsung_s22" -v --html=reports/samsung_s22_report.html --self-contained-html
+
+test-pixel-6:
+	TEST_MODE=browserstack pytest tests/test_b2b.py -k "pixel_6" -v --html=reports/pixel_6_report.html --self-contained-html
+
+# Параллельное тестирование на разных устройствах
+test-parallel-devices:
+	TEST_MODE=browserstack pytest tests/test_b2b.py::TestQrPaymentBrowserStack::test_full_qr_payment_flow_multidevice -n 4 -v --html=reports/parallel_devices_report.html --self-contained-html
 
 # Проверка подключения
 test-connection:
@@ -53,10 +71,16 @@ browserstack-upload:
 	python -c "from browserstack_helper import BrowserStackHelper; helper = BrowserStackHelper(); helper.upload_app('apk/halyk_bank_app.apk')"
 
 browserstack-check:
-	python -c "from settings import validate_browserstack_config; validate_browserstack_config()"
+	python -c "from config.settings import validate_browserstack_config; validate_browserstack_config()"
 
 browserstack-apps:
 	python -c "from browserstack_helper import BrowserStackHelper; import json; helper = BrowserStackHelper(); apps = helper.get_uploaded_apps(); print(json.dumps(apps, indent=2))"
+
+browserstack-devices:
+	python -c "from browserstack_helper import BrowserStackHelper; import json; helper = BrowserStackHelper(); devices = helper.get_device_status(); print(json.dumps(devices, indent=2))"
+
+browserstack-sessions:
+	python -c "from browserstack_helper import BrowserStackHelper; import json; helper = BrowserStackHelper(); print('Для получения информации о сессии используйте session_id')"
 
 # Очистка файлов
 clean:
@@ -80,3 +104,47 @@ full-test: clean install test-parallel
 
 # Полный цикл для BrowserStack
 full-browserstack-test: clean install browserstack-check test-qr-browserstack
+
+# Полный цикл для мульти-устройственного тестирования
+full-multidevice-test: clean install browserstack-check test-multidevice
+
+# Быстрый smoke тест на всех устройствах
+quick-smoke-multidevice: clean install browserstack-check test-ui-multidevice
+
+# Тестирование с Allure отчетами
+test-allure:
+	pytest --alluredir=reports/allure-results tests/test_b2b.py -v
+
+# Генерация Allure отчета
+allure-report:
+	allure serve reports/allure-results
+
+# Команды для CI/CD
+ci-test-local:
+	TEST_MODE=local pytest tests/test_b2b.py -v --junitxml=reports/junit.xml --html=reports/report.html --self-contained-html
+
+ci-test-browserstack:
+	TEST_MODE=browserstack pytest tests/test_b2b.py -v --junitxml=reports/junit.xml --html=reports/report.html --self-contained-html
+
+# Команды для отладки
+debug-local:
+	TEST_MODE=local pytest tests/test_b2b.py -v -s --tb=short
+
+debug-browserstack:
+	TEST_MODE=browserstack pytest tests/test_b2b.py -v -s --tb=short
+
+# Команды для профилирования
+profile-test:
+	TEST_MODE=local pytest tests/test_b2b.py --durations=10 -v
+
+# Команды для проверки конфигурации
+check-config:
+	python -c "from config.settings import *; print('✅ Конфигурация загружена успешно'); print(f'TEST_MODE: {TEST_MODE}'); print(f'BROWSERSTACK_USERNAME: {BROWSERSTACK_USERNAME}'); print(f'APP_PACKAGE: {APP_PACKAGE}')"
+
+# Команды для работы с QR кодами
+generate-qr:
+	python -c "from utils.qr_generator import make_qr; from data.qr_payloads import QR_PAYLOADS; import tempfile; import os; tmp = tempfile.mktemp(suffix='.png'); make_qr(QR_PAYLOADS['distrA']['text'], tmp); print(f'QR код создан: {tmp}')"
+
+# Команды для мониторинга
+monitor-browserstack:
+	watch -n 5 'python -c "from browserstack_helper import BrowserStackHelper; helper = BrowserStackHelper(); devices = helper.get_device_status(); print(\"Доступные устройства:\"); [print(f\"- {d[\"device\"]} ({d[\"os_version\"]}): {d[\"status\"]}\") for d in devices if devices] if devices else print(\"Нет данных\")"'

@@ -65,7 +65,33 @@ BROWSERSTACK_ANDROID_CAPS = {
     'browserstack.debug': True,
     'browserstack.video': True,
     'browserstack.networkLogs': True,
-    'browserstack.appiumLogs': True
+    'browserstack.appiumLogs': True,
+    'browserstack.local': True,  # Для доступа к локальным ресурсам
+    'browserstack.console': 'verbose',  # Подробные логи консоли
+    'browserstack.deviceLogs': True,  # Логи устройства
+    'browserstack.appium_version': '2.0.1',  # Версия Appium
+    'browserstack.idleTimeout': 300,  # Таймаут бездействия
+    'browserstack.acceptInsecureCerts': True,  # Принимать небезопасные сертификаты
+}
+
+# Дополнительные устройства для тестирования
+BROWSERSTACK_DEVICES = {
+    'samsung_s22': {
+        'device': 'Samsung Galaxy S22',
+        'os_version': '12.0'
+    },
+    'samsung_s21': {
+        'device': 'Samsung Galaxy S21',
+        'os_version': '11.0'
+    },
+    'pixel_6': {
+        'device': 'Google Pixel 6',
+        'os_version': '12.0'
+    },
+    'oneplus_9': {
+        'device': 'OnePlus 9',
+        'os_version': '11.0'
+    }
 }
 
 BROWSERSTACK_IOS_CAPS = {
@@ -78,7 +104,13 @@ BROWSERSTACK_IOS_CAPS = {
     'browserstack.debug': True,
     'browserstack.video': True,
     'browserstack.networkLogs': True,
-    'browserstack.appiumLogs': True
+    'browserstack.appiumLogs': True,
+    'browserstack.local': True,
+    'browserstack.console': 'verbose',
+    'browserstack.deviceLogs': True,
+    'browserstack.appium_version': '2.0.1',
+    'browserstack.idleTimeout': 300,
+    'browserstack.acceptInsecureCerts': True,
 }
 
 # Создание необходимых директорий
